@@ -1,0 +1,8 @@
+====== Prehľad potvrdení ======
+
+Môžete použiť nasledujúce vzory stránok:
+
+  * Stránky ako zvyčajne ich plným ID
+  * Menné priestory ako ''<nowiki>namespace:*</nowiki>''
+  * Menné priestory vrátane podradených priestorov ako ''<nowiki>namespace:**</nowiki>''
+  * Regulárne výrazy začínajúce a končiace ''/''
