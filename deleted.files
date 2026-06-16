@@ -1,6 +1,7 @@
 # This is a list of files that were present in previous releases
 # but were removed later. They should not exist in your installation.
 .travis.yml
+action.php
 admin.php
 conf/default.php
 conf/metadata.php
