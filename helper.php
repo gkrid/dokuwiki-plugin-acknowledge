@@ -628,4 +628,31 @@ class helper_plugin_acknowledge extends Plugin
     }
 
     // endregion
+    // region Plugin Integrations
+
+    /**
+     * Check status of the approve plugin (if installed and integration enabled in config)
+     *
+     * @param string $page page id
+     * @return bool true only if page is tracked by approve plugin but not in 'approved' status
+     */
+    public function isBlockedByApprove($page)
+    {
+        if (!$this->getConf('approve_integration')) return false;
+
+        /** @var helper_plugin_approve_db $approve */
+        $approve = plugin_load('helper', 'approve_db');
+        if (!$approve) return false;
+
+        // page not handled by approve
+        if ($approve->getPageMetadata($page) === null) return false;
+
+        // check if current revision is approved
+        $currentRev = (int)@filemtime(wikiFN($page));
+        $approveRev = $approve->getPageRevision($page, $currentRev);
+
+        return $approveRev['status'] !== 'approved';
+    }
+
+    // endregion
 }

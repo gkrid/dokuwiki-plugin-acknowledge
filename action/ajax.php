@@ -103,6 +103,11 @@ class action_plugin_acknowledge_ajax extends ActionPlugin
             return '';
         }
 
+        // if the approve plugin is active, only show if the page is approved
+        if ($helper->isBlockedByApprove($id)) {
+            return '';
+        }
+
         if ($ackSubmitted) {
             $helper->saveAcknowledgement($id, $user);
         }

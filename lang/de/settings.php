@@ -1,10 +1,8 @@
 <?php
 /**
- * english language file for acknowledge plugin
+ * German language file for acknowledge plugin
  *
  * @author Andreas Gohr, Anna Dabrowska <dokuwiki@cosmocode.de>
  */
 
-// keys need to match the config setting name
-// $lang['fixme'] = 'FIXME';
-
+$lang['approve_integration'] = 'Wenn das Approve Plugin installiert ist, Bestätigungen auf noch nicht geprüften Seiten ausblenden.';
