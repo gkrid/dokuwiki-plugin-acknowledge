@@ -468,6 +468,21 @@ class helper_plugin_acknowledge extends Plugin
     }
 
     /**
+     * Save an acknowledgement with an explicit timestamp.
+     * Useful for imports and tests. Ignores duplicates.
+     *
+     * @param string $page
+     * @param string $user
+     * @param int $time
+     * @return void
+     */
+    public function importAcknowledgement($page, $user, $time)
+    {
+        $sql = "INSERT OR IGNORE INTO acks (page, user, ack) VALUES (?,?,?)";
+        $this->db->exec($sql, [$page, $user, $time]);
+    }
+
+    /**
      * Get all pages that a user needs to acknowledge and/or the last acknowledgement infos
      * depending on the (optional) filter based on status of the acknowledgements.
      *
