@@ -8,3 +8,4 @@
  */
 
 $meta['approve_integration'] = ['onoff'];
+$meta['notification_integration'] = ['onoff'];

@@ -35,3 +35,5 @@ $lang['assignees'] = 'Zuweisung';
 $lang['save'] = 'Speichern';
 
 $lang['error sqlite plugin missing'] = 'Das sqlite plugin ist nicht installiert';
+
+$lang['notification'] = 'Sie müssen bestätigen, dass Sie die folgende Seite gelesen haben: %s';

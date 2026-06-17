@@ -38,3 +38,5 @@ $lang['assignees'] = 'Assignees';
 $lang['save'] = 'Save';
 
 $lang['error sqlite plugin missing'] = 'The sqlite plugin is missing';
+
+$lang['notification'] = 'You are required to acknowledge that you have read this page: %s';
