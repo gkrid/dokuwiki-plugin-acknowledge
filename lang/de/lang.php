@@ -21,6 +21,7 @@ $lang['reportTitle'] = 'Bestätigungsbericht';
 $lang['reportAcknowledgedTitle'] = 'Nutzer, die diese Seite bestätigt haben';
 $lang['reportPendingTitle'] = 'Nutzer, die diese Seite noch bestätigen müssen';
 $lang['reportNobody'] = '(noch keine)';
+$lang['reportUserCount'] = '%d Nutzer (anzeigen)';
 $lang['reportAckedOn'] = 'am';
 $lang['overviewPage'] = 'Seite';
 $lang['overviewUser'] = 'Nutzer';

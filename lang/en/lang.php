@@ -22,6 +22,7 @@ $lang['reportTitle'] = 'Acknowledgment Report';
 $lang['reportAcknowledgedTitle'] = 'Users who have acknowledged this page';
 $lang['reportPendingTitle'] = 'Users who still need to acknowledge this page';
 $lang['reportNobody'] = '(none yet)';
+$lang['reportUserCount'] = '%d users (show)';
 $lang['reportAckedOn'] = 'on';
 $lang['overviewPage'] = 'Page';
 $lang['overviewUser'] = 'User';

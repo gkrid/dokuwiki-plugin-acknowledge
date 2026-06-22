@@ -19,6 +19,7 @@ class action_plugin_acknowledge_ajax extends ActionPlugin
     {
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'handleAjaxAcknowledge');
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'handleAjaxAutocomplete');
+        $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'handleAjaxUserList');
     }
 
     /**
@@ -79,6 +80,36 @@ class action_plugin_acknowledge_ajax extends ActionPlugin
 
             echo json_encode($found);
         }
+    }
+
+    /**
+     * Returns the full user list for a report section (loaded on demand)
+     *
+     * @param Event $event
+     * @return void
+     */
+    public function handleAjaxUserList(Event $event)
+    {
+        if ($event->data !== 'plugin_acknowledge_userlist') return;
+
+        $event->stopPropagation();
+        $event->preventDefault();
+
+        if (!auth_ismanager()) return;
+
+        global $INPUT;
+        $id = $INPUT->str('id');
+        $status = $INPUT->str('status');
+
+        if (!page_exists($id)) return;
+        if (!in_array($status, ['current', 'due'], true)) return;
+
+        /** @var helper_plugin_acknowledge $helper */
+        $helper = plugin_load('helper', 'acknowledge');
+
+        if (!$helper->getPageAssignees($id)) return;
+
+        echo $this->userListHtml($helper->getPageAcknowledgements($id, '', $status));
     }
 
     /**
@@ -190,22 +221,43 @@ class action_plugin_acknowledge_ajax extends ActionPlugin
         $html .= '<div class="content">';
         $html .= '<h3>' . $this->getLang('reportTitle') . '</h3>';
 
+        // resolve group membership once, derive both counts arithmetically
+        $counts = $helper->getPageAcknowledgementCounts($id);
+
         if ($mode === 'acknowledged' || $mode === 'both') {
-            $acked = $helper->getPageAcknowledgements($id, '', 'current');
-            $html .= '<h4>' . $this->getLang('reportAcknowledgedTitle') . '</h4>';
-            $html .= $this->userListHtml($acked);
+            $html .= '<p>' . $this->getLang('reportAcknowledgedTitle') . '</p>';
+            $html .= $this->userCountHtml($id, 'current', $counts['current']);
         }
 
         if ($mode === 'pending' || $mode === 'both') {
-            $pending = $helper->getPageAcknowledgements($id, '', 'due');
-            $html .= '<h4>' . $this->getLang('reportPendingTitle') . '</h4>';
-            $html .= $this->userListHtml($pending);
+            $html .= '<p>' . $this->getLang('reportPendingTitle') . '</p>';
+            $html .= $this->userCountHtml($id, 'due', $counts['due']);
         }
 
         $html .= '</div>'; // content
         $html .= '</div>'; // box
 
         return $html;
+    }
+
+    /**
+     * Renders a clickable user count that loads the full user list on demand
+     *
+     * @param string $id
+     * @param string $status acknowledgement status ('current' or 'due')
+     * @param int $count
+     * @return string
+     */
+    protected function userCountHtml($id, $status, $count)
+    {
+        if (!$count) {
+            return '<p>' . $this->getLang('reportNobody') . '</p>';
+        }
+
+        return '<p><a href="#" class="plugin-acknowledge-loadusers"'
+            . ' data-id="' . hsc($id) . '" data-status="' . hsc($status) . '">'
+            . sprintf($this->getLang('reportUserCount'), $count)
+            . '</a></p>';
     }
 
     /**

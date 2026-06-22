@@ -53,6 +53,22 @@ jQuery(function () {
         section.append($aContainer);
     }
 
+    // on-page report: load the full user list when a count is clicked
+    $aContainer.on('click', 'a.plugin-acknowledge-loadusers', function (event) {
+        event.preventDefault();
+        const $link = jQuery(this);
+        const $target = jQuery('<div class="plugin-acknowledge-userlist"></div>');
+        $link.replaceWith($target);
+        $target.load(
+            DOKU_BASE + 'lib/exe/ajax.php',
+            {
+                call: 'plugin_acknowledge_userlist',
+                id: $link.data('id'),
+                status: $link.data('status')
+            }
+        );
+    });
+
     $aContainer.on('submit', function (event) {
         event.preventDefault();
         const $form = jQuery(event.target),

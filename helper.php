@@ -597,6 +597,42 @@ class helper_plugin_acknowledge extends Plugin
     }
 
     /**
+     * Count up-to-date and due acknowledgements for a given page
+     *
+     * Uses potentially slow getPageAssignees()
+     *
+     * @param string $page
+     * @return array{required:int, current:int, due:int}
+     */
+    public function getPageAcknowledgementCounts($page)
+    {
+        $users = $this->getPageAssignees($page);
+        if (!$users) {
+            return ['required' => 0, 'current' => 0, 'due' => 0];
+        }
+
+        $ulist = implode(',', array_map([$this->db->getPdo(), 'quote'], $users));
+        $sql = "SELECT COUNT(*) FROM (
+                    SELECT B.user
+                      FROM pages A
+                 LEFT JOIN acks B
+                        ON A.page = B.page
+                       AND B.user IN ($ulist)
+                     WHERE A.page = ?
+                  GROUP BY B.user
+                    HAVING MAX(B.ack) >= A.lastmod
+                )";
+        $current = (int)$this->db->queryValue($sql, $page);
+
+        $required = count($users);
+        return [
+            'required' => $required,
+            'current' => $current,
+            'due' => $required - $current,
+        ];
+    }
+
+    /**
      * Returns all acknowledgements
      *
      * @param int $limit maximum number of results
