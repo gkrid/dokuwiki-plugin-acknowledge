@@ -1,0 +1,33 @@
+.plugin-acknowledge-banner {
+    .plugin-acknowledge-box + .plugin-acknowledge-box {
+        margin-top: .5em;
+    }
+}
+
+.plugin-acknowledge-box {
+    display: block;
+    padding: .5em .8em;
+    border: 1px solid #000;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    page-break-inside: avoid;
+
+    > .ack-icon {
+        display: none;
+    }
+
+    h3,
+    h4 {
+        margin: 0 0 .3em;
+    }
+
+    p {
+        margin: .2em 0;
+    }
+
+    .ack-icon,
+    #ack-submit {
+        display: none;
+    }
+}
