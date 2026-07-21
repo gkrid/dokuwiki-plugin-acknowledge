@@ -112,7 +112,7 @@ class cli_plugin_acknowledge extends CLIPlugin
     protected function importIreaditRecords(\helper_plugin_ireadit_db $ireaditDb, bool $dryRun): int
     {
         $sqlite = $ireaditDb->getDB();
-        $res = $sqlite->query('SELECT page, user, rev, tim§estamp FROM ireadit');
+        $res = $sqlite->query('SELECT page, user, rev, timestamp FROM ireadit');
         if ($res === false) {
             throw new \RuntimeException('Failed to read records from the ireadit database');
         }
